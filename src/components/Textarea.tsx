@@ -1,11 +1,32 @@
 'use client';
 
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
+import { Sparkles, Wand } from 'lucide-react';
+
 import ControlBar from './ControlBar';
 
 const Textarea = () => {
   const [value, setValue] = useState('');
-  const maxLength = 1000;
+  const [response, setResponse] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    setResponse(null);
+    try {
+      const res = await getOpenAiResponse(value);
+      setResponse(res);
+    } catch (error) {
+      setError('Error al obtener la respuesta de OpenAI');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const maxLength = 250;
 
   return (
     <div className="w-2xl flex flex-col gap-2">
@@ -24,6 +45,12 @@ const Textarea = () => {
         >
           {value.length} / {maxLength}
         </span>
+        <button
+          className="absolute right-3 top-3 p-2 bg-gray-700 rounded-full hover:bg-gray-600 transition-colors"
+          onClick={() => setValue('')}
+        >
+          <Sparkles />
+        </button>
       </div>
       <ControlBar />
     </div>

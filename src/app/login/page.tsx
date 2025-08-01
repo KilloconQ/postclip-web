@@ -30,9 +30,11 @@ export default function LoginPage() {
       <div className="w-full max-w-sm p-8 bg-gray-800 rounded-lg shadow-xl border border-gray-700">
         <h2 className="text-2xl font-bold text-center mb-6 text-white">Iniciar sesión</h2>
         {error && <div className="mb-4 text-center text-red-400">{error}</div>}
-        <form className="flex flex-col gap-4" onSubmit={handleSubmit} method="post">
+        <form className="flex flex-col gap-4" onSubmit={handleSubmit} method="POST">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-200 mb-1">Email</label>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-200 mb-1">
+              Email
+            </label>
             <input
               id="email"
               name="email"
@@ -42,7 +44,9 @@ export default function LoginPage() {
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-200 mb-1">Contraseña</label>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-200 mb-1">
+              Contraseña
+            </label>
             <input
               id="password"
               name="password"
