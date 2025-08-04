@@ -1,7 +1,7 @@
 'use client';
 
 import { FormEvent, useState } from 'react';
-import { Sparkles, Wand } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 
 import ControlBar from './ControlBar';
 
