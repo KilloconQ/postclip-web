@@ -1,19 +1,23 @@
-import { SendHorizontal } from "lucide-react";
+import { Send } from 'lucide-react';
 
 const ControlBar = () => {
   return (
-    <div className="flex items-center gap-4 bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 mt-1">
-      <label className="flex items-center gap-1 text-xs text-white">
+    <div className="flex items-center justify-end gap-4  px-4 py-2 mt-1">
+      <label className="flex items-center gap-2 text-white">
         <input type="checkbox" className="accent-blue-500" />X
       </label>
-      <label className="flex items-center gap-1 text-xs text-white">
+      <label className="flex items-center gap-2 text-white">
         <input type="checkbox" className="accent-sky-400" />
         Bluesky
       </label>
       <div className="flex-1" />
-      <button className="flex items-center justify-center bg-blue-600 p-3 rounded-md hover:bg-blue-700 transition">
-        <SendHorizontal className="m-0" />
+      {/* <div className="flex items-center justify-end gap-2 px-4 py-2 mt-1"> */}
+      <button className="flex items-center text-white justify-center bg-blue-600 p-3 rounded-md hover:bg-blue-700 transition">
+        <div className="flex items-center gap-2">
+          <Send className="m-0" /> <span>Publicar</span>
+        </div>
       </button>
+      {/* </div> */}
     </div>
   );
 };
