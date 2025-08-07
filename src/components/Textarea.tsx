@@ -3,6 +3,7 @@
 import { type FormEvent, useEffect, useRef, useState } from 'react';
 import { Sparkles } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import Spinner from '@/components/ui/Spinner';
 
 import ControlBar from './ControlBar';
 import { getOpenAiResponse } from '../lib/api';
@@ -70,6 +71,24 @@ const Textarea = () => {
     setIsTyping(false);
   };
 
+  const rewriteText = async () => {
+    if (!value.trim()) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await getOpenAiResponse(value);
+      fullTextRef.current = res ?? '';
+      await typeText(fullTextRef.current);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(`Error al obtener la respuesta de OpenAI: ${err.message}`);
+      } else {
+        setError(`Error al obtener la respuesta de OpenAI: ${String(err)}`);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <form onSubmit={handleSubmit} className="w-2xl flex flex-col gap-2">
       <div className="relative">
@@ -89,19 +108,14 @@ const Textarea = () => {
 
         {/* Limpiar texto */}
         <button
-          className="absolute right-3 top-3 p-2 text-white bg-gray-700 rounded-full hover:bg-gray-600 transition-colors"
+          className={`absolute right-3 top-3 p-2 text-white bg-gray-700 rounded-full hover:bg-gray-600 transition-colors ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
           type="button"
-          onClick={() => {
-            cancelTypingRef.current = true;
-            setIsTyping(false);
-            setValue('');
-            fullTextRef.current = '';
-          }}
+          onClick={rewriteText}
           aria-label="Mejorar texto"
           title="Mejorar texto"
           disabled={loading}
         >
-          <Sparkles />
+          {loading ? <Spinner size={20} color="white" /> : <Sparkles />}{' '}
         </button>
 
         {/* Botón para saltar animación */}
@@ -119,15 +133,11 @@ const Textarea = () => {
         {isTyping && <span className="absolute left-4 top-4 animate-pulse select-none">▍</span>}
       </div>
 
-      {/* <button */}
-      {/*   type="submit" */}
-      {/*   className="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50" */}
-      {/*   disabled={loading || (!value.trim() && !isTyping)} */}
-      {/* > */}
-      {/*   {loading ? 'Enviando...' : 'Mejorar post'} */}
-      {/* </button> */}
-
-      {error && <div className="text-red-500 mt-2">{error}</div>}
+      {error && (
+        <div className="text-red-500 mt-2 items-center text-center">
+          Hubo un error inesperado inténtelo más tarde
+        </div>
+      )}
 
       <hr className="border-slate-700" />
 
